@@ -13,5 +13,23 @@ const Class = function(args) {
   return fn;
 };
 
+var hasProp = {}.hasOwnProperty;
 
-module.exports = Class;
+var extend = function(child, parent) {
+  // 拷贝静态方法（类方法）
+  for (var key in parent) {
+    if (hasProp.call(parent, key))
+      child[key] = parent[key];
+  }
+
+  // 设置原型继承
+  child.prototype.constructor = child;
+  child.prototype.__proto__ = parent.prototype;
+
+  return child;
+};
+
+module.exports = {
+  Class: Class,
+  extend: extend
+};
